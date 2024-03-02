@@ -8,7 +8,8 @@ import 'package:iconsax/iconsax.dart';
 
 
 class SelectImage extends StatefulWidget {
-  const SelectImage({ Key? key }) : super(key: key);
+   SelectImage({ Key? key, required this.loading}) : super(key: key);
+  final bool loading;
 
   @override
   _SelectImageState createState() => _SelectImageState();
@@ -69,35 +70,48 @@ class _SelectImageState extends State<SelectImage> with SingleTickerProviderStat
           const SizedBox(height: 10,),
           Text('File should be jpg, png', style: TextStyle(fontSize: 15, color: Colors.grey.shade500),),
           const SizedBox(height: 20,),
-          GestureDetector(
-            onTap: selectFile,
-            child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                child: DottedBorder(
-                  borderType: BorderType.RRect,
-                  radius: const Radius.circular(10),
-                  dashPattern: const [10, 4],
-                  strokeCap: StrokeCap.round,
-                  color: Colors.blue.shade400,
-                  child: Container(
-                    width: double.infinity,
-                    height: 150,
-                    decoration: BoxDecoration(
-                        color: Colors.blue.shade50.withOpacity(.3),
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Iconsax.folder_open, color: Colors.blue, size: 40,),
-                        const SizedBox(height: 15,),
-                        Text('Select your file', style: TextStyle(fontSize: 15, color: Colors.grey.shade400),),
-                      ],
-                    ),
-                  ),
-                )
+          AnimatedSwitcher(
+            switchInCurve: Curves.elasticOut,
+            switchOutCurve: Curves.ease,
+            reverseDuration: const Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 1200),
+            transitionBuilder: (child, animation) => ScaleTransition(
+              scale: animation,
+              child: child,
             ),
-          ),
+            child: widget.loading
+                ? const CircularProgressIndicator.adaptive()
+                :  GestureDetector(
+              onTap: selectFile,
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                  child: DottedBorder(
+                    borderType: BorderType.RRect,
+                    radius: const Radius.circular(10),
+                    dashPattern: const [10, 4],
+                    strokeCap: StrokeCap.round,
+                    color: Colors.blue.shade400,
+                    child: Container(
+                      width: double.infinity,
+                      height: 150,
+                      decoration: BoxDecoration(
+                          color: Colors.blue.shade50.withOpacity(.3),
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Iconsax.folder_open, color: Colors.blue, size: 40,),
+                          const SizedBox(height: 15,),
+                          Text('Select your file', style: TextStyle(fontSize: 15, color: Colors.grey.shade400),),
+                        ],
+                      ),
+                    ),
+                  )
+              ),
+            ),
+          )
+          ,
           _platformFile != null
               ? Container(
               padding: const EdgeInsets.all(20),
@@ -235,7 +249,7 @@ class _SelectImageState extends State<SelectImage> with SingleTickerProviderStat
                 ],
               ),
             )
-                : Container(),
+                : Text(""),
           ),
 
 

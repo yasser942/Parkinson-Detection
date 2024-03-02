@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parkinson/screens/home.dart';
+import 'package:parkinson/screens/onboarding.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
            ),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home:  TestScreen(),
     );
   }
 }

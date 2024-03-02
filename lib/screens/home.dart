@@ -7,9 +7,26 @@ import '../widgets/upload_image.dart';
 
 
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  bool loading = true;
+
+  @override
+  void didChangeDependencies() {
+    Future.delayed(const Duration(seconds: 1)).then((_) {
+      setState(() {
+        loading = false;
+      });
+    });
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return DraggableHome(
@@ -18,10 +35,23 @@ class HomePage extends StatelessWidget {
       actions: [
         IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
       ],
-      headerWidget: headerWidget(context),
+      headerWidget:AnimatedSwitcher(
+        switchInCurve: Curves.elasticOut,
+        switchOutCurve: Curves.ease,
+        reverseDuration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 1200),
+        transitionBuilder: (child, animation) => ScaleTransition(
+          scale: animation,
+          child: child,
+        ),
+        child: loading
+            ? const CircularProgressIndicator.adaptive()
+            :  headerWidget(context),
+      ),
       headerBottomBar: headerBottomBarWidget(),
-      body: const [
-        SelectImage(),
+      body:  [
+
+        SelectImage(loading:loading),
       ],
       fullyStretchable: false,
       expandedBody:  const CameraPreview(),
@@ -45,7 +75,7 @@ class HomePage extends StatelessWidget {
 
   Widget headerWidget(BuildContext context) {
     return Image.asset(
-      "assets/brain chemistry.gif",
+      "assets/brain chemistry-pana.png",
       fit: BoxFit.cover,
     );
   }
