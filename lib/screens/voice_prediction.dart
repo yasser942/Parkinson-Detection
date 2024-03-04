@@ -1,21 +1,17 @@
 import 'package:draggable_home/draggable_home.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:parkinson/screens/voice_prediction.dart';
 
-import '../widgets/upload_image.dart';
+import '../widgets/voice_inputs.dart';
 
-
-
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class VoicePrediction extends StatefulWidget {
+  const VoicePrediction({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<VoicePrediction> createState() => _VoicePredictionState();
 }
 
-class _HomePageState extends State<HomePage> {
-
+class _VoicePredictionState extends State<VoicePrediction> {
   bool loading = true;
 
   @override
@@ -27,65 +23,67 @@ class _HomePageState extends State<HomePage> {
     });
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return DraggableHome(
-      title: const Text("Image Analysis"),
-      actions: [
-        IconButton(onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const VoicePrediction()),
-          );
-        }, icon: const Icon(Icons.list)),
-      ],
-      headerWidget:AnimatedSwitcher(
-        switchInCurve: Curves.elasticOut,
+      leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios)),
+      title: const Text("Voice Analysis"),
+      actions: [],
+      headerWidget: AnimatedSwitcher(
+        switchInCurve: Curves.slowMiddle,
         switchOutCurve: Curves.ease,
-        reverseDuration: const Duration(milliseconds: 200),
-        duration: const Duration(milliseconds: 1200),
+        reverseDuration: Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 1200),
         transitionBuilder: (child, animation) => ScaleTransition(
           scale: animation,
           child: child,
         ),
         child: loading
-            ? const CircularProgressIndicator.adaptive()
-            :  headerWidget(context),
+            ? CircularProgressIndicator.adaptive()
+            : headerWidget(context),
       ),
       headerBottomBar: headerBottomBarWidget(),
-      body:  [
-
-        SelectImage(loading:loading),
+      body: [
+        SizedBox(
+          height: 20,
+        ),
+        AnimatedSwitcher(
+          switchInCurve: Curves.elasticOut,
+          switchOutCurve: Curves.ease,
+          reverseDuration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 1200),
+          transitionBuilder: (child, animation) => ScaleTransition(
+            scale: animation,
+            child: child,
+          ),
+          child: loading
+              ? Center(child: CircularProgressIndicator.adaptive())
+              : SingleChildScrollView(child: VoiceInputs()),
+        ),
       ],
       fullyStretchable: false,
-      expandedBody:   Container(),
+      expandedBody: Container(),
       backgroundColor: Colors.white,
     );
   }
 
   Row headerBottomBarWidget() {
-    return  Row(
+    return const Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const VoicePrediction()),
-            );
-          },
-          icon: const Icon(Icons.list),
-        ),
-
-      ],
+      children: [],
     );
   }
 
   Widget headerWidget(BuildContext context) {
     return Image.asset(
-      "assets/brain chemistry-pana.png",
+      "assets/Voice chat-bro.png",
       fit: BoxFit.cover,
     );
   }

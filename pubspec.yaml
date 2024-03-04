@@ -43,6 +43,8 @@ dependencies:
   iconsax: ^0.0.8
   intro_screen_onboarding_flutter: ^1.0.0
   http: ^1.2.1
+  path_provider: ^2.1.2
+  awesome_dialog: ^3.2.0
 
 dev_dependencies:
   flutter_test:
