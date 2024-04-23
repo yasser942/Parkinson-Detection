@@ -62,7 +62,7 @@ class VoiceInputsState extends State<VoiceInputs> {
 
         var request = http.Request(
           'POST',
-          Uri.parse('http://192.168.1.112:5000/predict'),
+          Uri.parse('http://192.168.1.113:5001/predict/voice'),
         );
         request.body = body;
         request.headers.addAll({'Content-Type': 'application/json'});

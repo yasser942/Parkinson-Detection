@@ -42,7 +42,7 @@ class _SelectImageState extends State<SelectImage>
     try {
       var request = http.MultipartRequest(
           'POST',
-          Uri.parse('http://194.27.103.42:5000/predict'));
+          Uri.parse('http://192.168.1.113:5001/predict/image'));
       request.files.add(
           await http.MultipartFile.fromPath(
               'image',

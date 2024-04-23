@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:parkinson/screens/home.dart';
 import 'package:parkinson/screens/onboarding.dart';
 
 void main() {
