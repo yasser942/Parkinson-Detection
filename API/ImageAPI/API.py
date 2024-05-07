@@ -4,9 +4,11 @@ import joblib
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC  # Import SVM Classifier
+from flask_cors import CORS 
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 # Load your trained model and scaler here
 svm = joblib.load('ImageAPI\\best_model.pkl')  # Load SVM model
@@ -40,4 +42,4 @@ def predict():
     return jsonify({'prediction': prediction[0], 'probabilities': probabilities_dict})
 
 if __name__ == '__main__':
-    app.run(host="192.168.1.113",debug=True, port=5001, threaded=False)
+    app.run(host="192.168.1.112",debug=True, port=5001, threaded=False)

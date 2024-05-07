@@ -7,6 +7,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 from flask import Flask, request, jsonify
 import pickle
+from flask_cors import CORS 
+
 
 def save_model_scaler(model, scaler, model_filename="model.pkl", scaler_filename="scaler.pkl"):
     with open(model_filename, 'wb') as f:
@@ -51,21 +53,25 @@ else:
     print("KNN model saved as the best model.")
 
 app = Flask(__name__)
+CORS(app)
+
 
 @app.route('/predict/voice', methods=['POST'])
 def predict():
     data = request.get_json()
+    data =[float(item) for item in data]
     if not isinstance(data, list):
         return jsonify({'error': 'Invalid input format. Please provide a list of numerical values.'}), 400
     if not all(isinstance(val, (int, float)) for val in data):
         return jsonify({'error': 'Invalid input data. Please provide only numerical values.'}), 400
     input_data_array = np.asarray(data)
     input_data_reshape = input_data_array.reshape(1, -1)
-    model = pickle.load(open('best_model.pkl', 'rb'))
-    scaler = pickle.load(open('best_scaler.pkl', 'rb'))
+    model = pickle.load(open('VoiceAPI\\best_model.pkl', 'rb'))
+    scaler = pickle.load(open('VoiceAPI\\best_scaler.pkl', 'rb'))
     std_data = scaler.transform(input_data_reshape)
     prediction = model.predict(std_data)[0]
+    
     return jsonify({'prediction': int(prediction)})
 
 if __name__ == '__main__':
-    app.run(host="192.168.1.113",debug=True, port=5001, threaded=False)
+    app.run(host="192.168.1.112",debug=True, port=5001, threaded=False)
